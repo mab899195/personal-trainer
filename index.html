@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gym Program</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="titles">
+        <select id="programSelect" class="program-select" aria-label="Choose program"></select>
+        <p class="subtitle" id="dayCount"></p>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+    </header>
+
+    <nav class="days" id="daySelector" aria-label="Workout day"></nav>
+
+    <main class="grid" id="exerciseGrid"></main>
+  </div>
+
+  <script src="programs.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
