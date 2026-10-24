@@ -2,23 +2,126 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gym Program</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0F1012">
+  <title>Personal Trainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="app">
-    <header class="topbar">
-      <div class="titles">
-        <select id="programSelect" class="program-select" aria-label="Choose program"></select>
-        <p class="subtitle" id="dayCount"></p>
+    <!-- TODAY -->
+    <section class="view" id="viewToday" aria-label="Today's workout">
+      <header class="topbar">
+        <label class="program-pick">
+          <span class="sr-only">Program</span>
+          <select id="programSelect"></select>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </label>
+        <button class="icon-btn" id="resetDay" type="button" aria-label="Reset today's progress" title="Reset today's progress">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+        </button>
+      </header>
+
+      <div class="hero">
+        <p class="eyebrow" id="dayEyebrow"></p>
+        <h1 class="display" id="dayName"></h1>
+        <p class="muted" id="dayFocus"></p>
       </div>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
-    </header>
 
-    <nav class="days" id="daySelector" aria-label="Workout day"></nav>
+      <nav class="pills" id="dayPills" aria-label="Workout day"></nav>
 
-    <main class="grid" id="exerciseGrid"></main>
+      <div class="progress-card">
+        <div class="progress-info">
+          <div class="progress-row"><span class="muted">Progress</span><span id="progressText"></span></div>
+          <div class="bar"><div class="bar-fill" id="progressBar"></div></div>
+        </div>
+        <span class="progress-pct" id="progressPct"></span>
+      </div>
+
+      <ul class="ex-list" id="exList"></ul>
+
+      <div class="cta-wrap">
+        <button class="cta" id="startBtn" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg>
+          <span id="startLabel">Start workout</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- EXERCISE -->
+    <section class="view" id="viewExercise" aria-label="Exercise" hidden>
+      <header class="topbar">
+        <button class="icon-btn" id="backBtn" type="button" aria-label="Back to today">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <span class="muted small strong" id="exCounter"></span>
+        <span class="icon-btn-spacer" aria-hidden="true"></span>
+      </header>
+
+      <div class="media">
+        <img id="exImg" alt="">
+        <span class="media-tag" id="exMuscles"></span>
+      </div>
+
+      <div class="ex-head">
+        <h1 class="display display-md" id="exName"></h1>
+        <p class="muted" id="exTarget"></p>
+      </div>
+
+      <div class="rest" id="restBar" hidden>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>
+        <span class="rest-label">Rest</span>
+        <span class="rest-time" id="restTime" aria-live="polite"></span>
+        <button type="button" class="rest-skip" id="restAdd">+30s</button>
+        <button type="button" class="rest-skip" id="restSkip">Skip</button>
+      </div>
+
+      <div class="sets" role="table" aria-label="Sets">
+        <div class="set-row set-head" role="row">
+          <span role="columnheader">Set</span><span role="columnheader">Weight</span><span role="columnheader">Reps</span><span role="columnheader" class="center">Done</span>
+        </div>
+        <div id="setRows"></div>
+      </div>
+
+      <div class="swap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></svg>
+        <span class="swap-text" id="swapText"></span>
+        <button type="button" class="chip-btn" id="swapBtn">Swap</button>
+      </div>
+
+      <div class="cta-wrap">
+        <button class="cta" id="nextBtn" type="button">Next exercise</button>
+      </div>
+    </section>
+
+    <!-- PROGRAM -->
+    <section class="view" id="viewProgram" aria-label="Program overview" hidden>
+      <header class="hero hero-top">
+        <p class="eyebrow">Your program</p>
+        <h1 class="display display-md" id="progName"></h1>
+      </header>
+      <div class="segment" id="progSegment" role="radiogroup" aria-label="Program"></div>
+      <div class="stats">
+        <div class="stat"><span class="stat-num accent" id="statDays"></span><span class="muted small">Days done</span></div>
+        <div class="stat"><span class="stat-num" id="statEx"></span><span class="muted small">Exercises</span></div>
+        <div class="stat"><span class="stat-num" id="statSets"></span><span class="muted small">Sets logged</span></div>
+      </div>
+      <ol class="day-list" id="dayList"></ol>
+    </section>
+
+    <nav class="tabbar" id="tabbar" aria-label="Main">
+      <button type="button" data-tab="today" class="tab active">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6.5 6.5v11M17.5 6.5v11M3 9.5v5M21 9.5v5M6.5 12h11"/></svg>
+        Today
+      </button>
+      <button type="button" data-tab="program" class="tab">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        Program
+      </button>
+    </nav>
   </div>
 
   <script src="programs.js"></script>
